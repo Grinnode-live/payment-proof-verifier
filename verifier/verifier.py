@@ -18,15 +18,17 @@ class Verifier:
             signing_key=None,
             api_address='',
             api_grin_address=None):
-        self.grin_address = AtomBech32Decoder.Decode('grin', grin_address)
+        self.grin_address = grin_address
+        self.grin_address_bytes = AtomBech32Decoder.Decode('grin', grin_address)
         self.signing_key = bytes.fromhex(signing_key)
         self.api_address = api_address
-        self.api_grin_address = AtomBech32Decoder.Decode('grin', api_grin_address)
+        self.api_grin_address = api_grin_address
+        self.api_grin_address_bytes = AtomBech32Decoder.Decode('grin', api_grin_address)
 
     def isSignatureValid(self, response, signature):
         signature_bytes = bytes.fromhex(signature)
         try:
-            verifyString(self.api_grin_address, response, signature_bytes)
+            verifyString(self.api_grin_address_bytes, response, signature_bytes)
         except BadSignatureError:
             raise InvalidResponseSignatureError
 
@@ -35,12 +37,12 @@ class Verifier:
         if authorize:
             headers['authorization'] = self.grin_address
         if sign:
-            f = furl(target[1])
+            f = furl(url)
             timestamp = generateUTCTimestamp()
             f.set({'ts': timestamp})
             url = f.url
             message = str(f.path) + '?' + str(f.query)
-            signature, _ = signString(signing_key_bytes, message)
+            signature, _ = signString(self.signing_key, message)
             headers['signature'] = signature.hex()
         response = requests.get(url, headers=headers)
         signature = response.headers.get('signature', None)
@@ -48,7 +50,7 @@ class Verifier:
             self.isSignatureValid(response.text, signature)
         return response.text, signature
 
-    def requestPOST(url, payload, authorize=False, sign=False):
+    def requestPOST(self, url, payload, authorize=False, sign=False):
         headers = {}
         timestamp = generateUTCTimestamp()
         payload['timestamp'] = timestamp
@@ -56,9 +58,9 @@ class Verifier:
         if authorize:
             headers['authorization'] = self.grin_address
         if sign:
-            signature, _ = signString(signing_key_bytes, payload_string)
+            signature, _ = signString(self.signing_key, payload_string)
             headers['signature'] = signature.hex()
-        response = requests.get(url, data=payload_string, headers=headers)
+        response = requests.post(url, data=payload_string, headers=headers)
         signature = response.headers.get('signature', None)
         if signature is not None:
             self.isSignatureValid(response.text, signature)
@@ -80,8 +82,11 @@ class Verifier:
         return self.requestGET(url, authorize=True, sign=sign)
 
     def updateSettings(self, settings):
-        url = self.api_address + '/v1/charge/'
-        return self.requestPOST(url, settings, authorize=True, sign=True)
+        url = self.api_address + '/v1/settings/'
+        payload = {
+            'settings': settings
+        }
+        return self.requestPOST(url, payload, authorize=True, sign=True)
 
     def balance(self, sign=False):
         url = self.api_address + '/v1/balance/'
