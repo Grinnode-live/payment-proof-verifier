@@ -14,7 +14,7 @@ from verifier.verifier import Verifier
 my_grin_wallet = 'grin1y3fxgseja6a4agchfl93wf9jhzpx5cqdg32mvh36jdsf6k9wsrrq96grxx'
 my_signing_key = '90f7c3309c8ecf093a36b98271812f024aed1845c500c5d454b3af8a1ff55fad'
 api_grin_wallet = 'grin1nhzvk7fe5fkmzvqlrlryfqngzv7fl5fztp3ckjgd0y483ye5gvgs7vj6q9'
-api_address = 'https://verifier.grinnode.live'
+api_address = 'http://txproof.grinnode.live'
 
 verifier = Verifier(
     grin_address=my_grin_wallet,
@@ -203,7 +203,7 @@ The grin wallet can be started in [two API listener modes](https://docs.grin.mw/
 
 ### GET /v1/address/
 
-Endpoint: `https://verifier.grinnode.live/v1/address/`
+Endpoint: `http://txproof.grinnode.live/v1/address/`
 Method: `GET`
 Rate limit: `1 per 15 second`
 Headers:
@@ -217,7 +217,7 @@ N/A
 
 ### POST /v1/charge/
 
-Endpoint: `https://verifier.grinnode.live/v1/charge/`
+Endpoint: `http://txproof.grinnode.live/v1/charge/`
 Method: `POST`
 Rate limit: `1 per 30 second`
 Headers:
@@ -240,7 +240,7 @@ Payload:
 
 ### GET /v1/settings/
 
-Endpoint: `https://verifier.grinnode.live/v1/settings/`
+Endpoint: `http://txproof.grinnode.live/v1/settings/`
 Method: `GET`
 Rate limit: `1 per 30 second`
 Headers:
@@ -256,7 +256,7 @@ Remarks:
 
 ### POST /v1/settings/
 
-Endpoint: `https://verifier.grinnode.live/v1/settings/`
+Endpoint: `http://txproof.grinnode.live/v1/settings/`
 Method: `POST`
 Rate limit: `1 per 30 second`
 Headers:
@@ -275,7 +275,7 @@ Payload:
 
 ### GET /v1/balance/
 
-Endpoint: `https://verifier.grinnode.live/v1/balance/`
+Endpoint: `http://txproof.grinnode.live/v1/balance/`
 Method: `GET`
 Rate limit: `1 per 30 second`
 Headers:
@@ -291,7 +291,7 @@ Remarks:
 
 ### POST /v1/verify/
 
-Endpoint: `https://verifier.grinnode.live/v1/charge/`
+Endpoint: `http://txproof.grinnode.live/v1/charge/`
 Method: `POST`
 Rate limit: `1 per 5 second`
 Headers:
