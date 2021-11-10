@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='python-grin-verifier',
-    version='0.0.1',
+    version='0.0.2',
     packages=['verifier',],
     license='MIT',
     description = 'An API wrapper for grinnode.live Grin payment proof verification service.',

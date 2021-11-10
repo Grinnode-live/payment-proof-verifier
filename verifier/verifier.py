@@ -26,7 +26,7 @@ class Verifier:
         self.api_grin_address_bytes = AtomBech32Decoder.Decode('grin', api_grin_address)
 
     def isSignatureValid(self, response, signature):
-        signature_bytes = bytes.fromhex(signature)
+        signature_bytes = bytes.fromhex(signature.strip())
         try:
             verifyString(self.api_grin_address_bytes, response, signature_bytes)
         except BadSignatureError:
